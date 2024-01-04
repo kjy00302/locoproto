@@ -4,7 +4,6 @@ from cryptography.hazmat.primitives.asymmetric import padding
 import cryptography.hazmat.primitives.ciphers as ciphers
 import struct
 import secrets
-import random
 
 from typing import List
 
@@ -49,7 +48,7 @@ class V2SLClient:
         return handshake_pkt
         
     def _send(self, data: bytes) -> bytes:
-        iv = random.randbytes(16)
+        iv = secrets.randbits(128).to_bytes(16, "little")
         self._aes = ciphers.Cipher(
             ciphers.algorithms.AES(self._aeskey),
             ciphers.modes.CFB(iv)
